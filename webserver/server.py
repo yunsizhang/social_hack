@@ -141,7 +141,7 @@ def add():
          
 #staff
 
-@app.route('/staff/<username>')
+@app.route('/Staff/<username>')
 def profile_s(username): 
   cur=g.conn.execute("select m.* from Staff as s, M_O as m where s.staff_ID=m.staff_ID and s.name=%s;",username)
   s=cur.fetchall()
