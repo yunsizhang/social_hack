@@ -41,6 +41,100 @@ def teardown_request(exception):
 @app.route('/')
 def index():
   return render_template("index.html")
+
+#sign in
+@app.route('/signin',methods=['POST'])
+def sign():
+  username = request.form['username']
+  password = request.form['password']
+  t=request.form['name']
+  record=g.conn.execute('SELECT username FROM Person WHERE username = %s',username)
+  if not record.fetchone():
+    return render_template("signinerror.html")
+    record.close()
+  else:
+    record=g.conn.execute('SELECT password FROM Person WHERE username = %s',username)
+    p= record.fetchone()
+    record.close()
+    if p[0] == password:
+      if t =='Staff':
+        cur=g.conn.execute("select s.* from Staff as s, Person as p  where s.user_id=p.user_id and p.username=%s;",username)
+        a=cur.first()
+        if a==None:
+          return render_template("signinerror.html")
+        else:                  
+          return redirect('/Staff/%s'%username)
+      else:
+        cur=g.conn.execute("select a.* from Alumni as a, Person as p  where a.user_id=p.user_id and p.username=%s;",username)
+        a=cur.first()
+        if a==None:
+          return render_template("signinerror.html")
+        else:
+          return redirect('/Alumni/%s'%username)  
+    else: 
+      return render_template("signinerror.html")
+    
+#sign up
+@app.route('/signup')
+def signup():
+  return render_template("signup.html")
+
+#add user
+@app.route('/signup/add',methods=['POST'])
+def add():
+    username = request.form['username']
+    firstname = request.form['first_name']
+    lastname = request.form['last_name']
+    email = request.form['email']
+    password = request.form['password']
+    usertype = request.form['usertype']
+    
+    if username=='' or firstname=='' or lastname=='' or email=='' or password=='':
+        return render_template("signupinvalid.html")
+
+    start=str(username[0])
+    #username exists
+    cursor = g.conn.execute("SELECT username FROM Person;")
+    allnames = []
+    for result in cursor:
+        allnames.append(result[0])  # can also be accessed using result[0]
+    cursor.close()
+
+  #username exists end
+
+  #
+
+  #email exists
+    cursor1 = g.conn.execute("SELECT email FROM Person;")
+    allemails = []
+    for result in cursor1: 
+        allemails.append(result[0])  # can also be accessed using result[0]
+
+    cursor1.close()
+
+  #email exists end
+    if username in allnames or email in allemails:
+        return render_template("signuperror.html")
+    else:
+        #Check username valid
+        if str.isdigit(start) or email.count('@')!=1 or len(password)<8:
+            return render_template("signupinvalid.html")
+        else:        
+            #new user_id
+            record = g.conn.execute("select max(user_id)+1 from Person")
+            uid=record.first()[0]
+            #new user_id end
+            cmd = 'INSERT INTO Person VALUES (:username1, :uid1, :firstname1, :lastname1, :email1, :password1)';
+            g.conn.execute(text(cmd), username1=username,uid1=uid, firstname1=firstname,lastname1=lastname,email1=email, password1=password);
+            if usertype=='Alumni':
+                recorda = g.conn.execute("select max(record_ID)+1 from Alumni")
+                aid=recorda.first()[0]
+                g.conn.execute("insert into Alumni values (%s, %s);",(uid,aid))
+            else:
+                records = g.conn.execute("select max(staff_ID)+1 from Staff")
+                sid=records.first()[0]
+                g.conn.execute("insert into Staff values (%s, %s,%s)",(uid,sid,username))
+            return render_template("sus.html")
   
   
 if __name__ == "__main__":
