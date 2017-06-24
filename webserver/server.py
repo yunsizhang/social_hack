@@ -13,7 +13,7 @@ app = Flask(__name__, template_folder=tmpl_dir)
 # For example, if you had username ewu2493, password foobar, then the following line would be:
 #
 #     DATABASEURI = "postgresql://ewu2493:foobar@<IP_OF_POSTGRE_SQL_SERVER>/postgres"
-DATABASEURI = "postgresql://postgres:kl2912@35.185.17.247/postgres"
+DATABASEURI = "postgresql://postgres:kl2912@35.196.40.248/postgres"
 # This line creates a database engine that knows how to connect to the URI above
 engine = create_engine(DATABASEURI)
 @app.before_request
