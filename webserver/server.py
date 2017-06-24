@@ -154,7 +154,7 @@ def profile_s(username):
   #n=cursor.first()[0]
   #cursor=g.conn.execute("select title from job_posted where job_id=%s;",m[1])
   #n1=cursor.first()[0]
-    applications.append(('Outreach&Meeting',m[0],m[1],m[2],m[3]))
+    activities.append(('Outreach&Meeting',m[0],m[1],m[2],m[3]))
 # if m[1] not in alljid:
 #   alljid.append(m[1])
 # if n not in allname:
