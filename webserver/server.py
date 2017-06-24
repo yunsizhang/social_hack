@@ -126,14 +126,17 @@ def add():
             #new user_id end
             cmd = 'INSERT INTO Person VALUES (:username1, :uid1, :firstname1, :lastname1, :email1, :password1)';
             g.conn.execute(text(cmd), username1=username,uid1=uid, firstname1=firstname,lastname1=lastname,email1=email, password1=password);
+            g.conn.commit()
             if usertype=='Alumni':
                 recorda = g.conn.execute("select max(record_ID)+1 from Alumni")
                 aid=recorda.first()[0]
                 g.conn.execute("insert into Alumni values (%s, %s);",(uid,aid))
+                g.conn.commit()
             else:
                 records = g.conn.execute("select max(staff_ID)+1 from Staff")
                 sid=records.first()[0]
                 g.conn.execute("insert into Staff values (%s, %s,%s)",(uid,sid,username))
+                g.conn.commit()
             return render_template("sus.html")
   
   
