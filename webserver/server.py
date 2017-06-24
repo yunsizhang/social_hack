@@ -143,31 +143,31 @@ def add():
 
 @app.route('/staff/<username>')
 def profile_s(username): 
-cur=g.conn.execute("select m.* from Staff as s, M_O as m where s.staff_ID=m.staff_ID and s.name=%s;",username)
-s=cur.fetchall()
-cur.close()
-activities=[]
-alljid=[]
-allname=[]
-for m in s:
+  cur=g.conn.execute("select m.* from Staff as s, M_O as m where s.staff_ID=m.staff_ID and s.name=%s;",username)
+  s=cur.fetchall()
+  cur.close()
+  activities=[]
+  alljid=[]
+  allname=[]
+  for m in s:
   #cursor=g.conn.execute("select p.username from jobseeker as j,person as p where j.jobseeker_id=%s and     #p.user_id=j.user_id;",m[0])
- #n=cursor.first()[0]
-#cursor=g.conn.execute("select title from job_posted where job_id=%s;",m[1])
-#n1=cursor.first()[0]
-  applications.append(('Outreach&Meeting',m[0],m[1],m[2],m[3]))
+  #n=cursor.first()[0]
+  #cursor=g.conn.execute("select title from job_posted where job_id=%s;",m[1])
+  #n1=cursor.first()[0]
+    applications.append(('Outreach&Meeting',m[0],m[1],m[2],m[3]))
 # if m[1] not in alljid:
 #   alljid.append(m[1])
 # if n not in allname:
  #  allname.append(n)
     
-cursor=g.conn.execute("select * from Friendlist where user_ID=%s;",uid)
-friends=cursor.first()
-if friends==None:
-  update_time_f=''
-  friendlist=''
-else:
-  update_time_f=friends[1]
-  friendlist=friends[2].split(',')
+  cursor=g.conn.execute("select * from Friendlist where user_ID=%s;",uid)
+  friends=cursor.first()
+  if friends==None:
+    update_time_f=''
+    friendlist=''
+  else:
+    update_time_f=friends[1]
+    friendlist=friends[2].split(',')
   return render_template("staff.html",**locals())
 
 if __name__ == "__main__":
