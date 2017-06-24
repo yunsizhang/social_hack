@@ -143,9 +143,12 @@ def add():
 
 @app.route('/Staff/<username>')
 def profile_s(username): 
+  cursor=g.conn.execute("select user_id from person where username=%s;",username)
+  uid=cursor.first()[0]
   cur=g.conn.execute("select m.* from Staff as s, M_O as m where s.staff_ID=m.staff_ID and s.name=%s;",username)
   s=cur.fetchall()
   cur.close()
+  cursor.close()
   activities=[]
   alljid=[]
   allname=[]
