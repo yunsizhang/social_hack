@@ -1,0 +1,118 @@
+<html>
+  <style>
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+    }
+  </style>
+<meta http-equiv="refresh" content="60">
+<body>
+<h1>Your posted activity and coffee chat</h1>
+<table width="800" border="0">
+    <tr>
+        <td colspan="4" style="background-color:#FFA500;">
+            <h1>Application status</h1>
+        </td>
+    </tr>
+    <tr style="background-color:#F5DEB3;">
+        <td width=80>activity id</td>
+		<td >Title</td>
+	    <td width=200>Alumni</td>
+		<td width=120>Status</td>
+    </tr>
+	{% for row in applications %}
+    <tr border='1' > 
+		{% for col in row %}
+		<td>{{col}}</td>
+	    		{% endfor %}
+	</tr>
+    {% endfor %}
+	<tr>
+         <td colspan="4" style="background-color:#FFA500;text-align:center;">{{username}}</td>
+    </tr>
+</table>
+
+<h2 style="color:red">Don't miss your Coffee Chat!</h2>
+
+
+<table width="800" border="0">
+    <tr>
+        <td colspan="4" style="background-color:#FFA500;">
+            <h1>Coffee Chat</h1>
+        </td>
+    </tr>
+	<tr style="background-color:#F5DEB3;">
+        <td width=80>coffee ID</td>	    
+	    <td >Title</td>
+		<td width=200>Alumni</td>
+		<td width=120>Date</td>
+    </tr>
+	{% for row in interviews %}
+    <tr border='1' > 
+		{% for col in row %}
+		<td>{{col}}</td>
+	    		{% endfor %}
+	</tr>
+    {% endfor %}
+	<tr>
+         <td colspan="4" style="background-color:#FFA500;text-align:center;">{{username}}</td>
+    </tr>
+	
+</table>
+
+<h2 style="color:red">Edit activity status and add coffee chat time here!</h2>
+
+<form action="/editstatus/{{username}}" method="post" target="_blank">
+    <table>
+        <tr>
+            <td><label for="txtjobid" >Activity ID:</label></td>
+            <td>
+			<select name="job_id">
+			{% for n in alljid %}
+			<option value="{{n}}">{{n}}</option>
+			{% endfor %}
+	        </select>
+			</td>            
+			<td><label for="txtjobseeker" >Alumni:</label></td>
+            <td>
+			<select name="jobseeker">
+			{% for i in allname %}
+			<option value="{{i}}">{{i}}</option>
+			{% endfor %}
+	        </select>
+			</td>
+			<td width="50"> </td>
+		    <td> New status:</td>
+            <td><input type="radio" name="status" value="Accpeted" > Accepted <input type="radio" name="status" value="Rejected" checked="checked">Rejected
+			</td>
+			<td width="100"> </td>
+        </tr>
+		<tr>
+		    <td colspan="7">
+			If change status to coffee chat, please enter the date of appointments:
+		    <input type="text" id="txttime" name="time" onfocus="this.value=''" value="YYYY-MM-DD" />
+			</td>
+		</tr>
+		<tr>
+            <td colspan="3">          
+                <input type="submit" value="submit"/>
+            </td>
+        </tr>
+
+    </table>
+	<p>Note: Date should be in form "YYYY-MM-DD", example:2016-11-14</p>
+	<p>Note: If you submit "coffee chat" status of a application with "coffee chat" status, the intervew time would be updated </p>
+</form> 
+<br>
+<hr>
+
+<table width="800" border="0">
+  <tr>
+  <td colspan="2" style="background-color:#AFEEEE;text-align:center;">copyright © job!{2}/td>
+  </tr>
+</table>
+
+</body>
+
+
+</html>
