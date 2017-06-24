@@ -173,6 +173,26 @@ def profile_s(username):
     friendlist=friends[2].split(',')
   return render_template("staff.html",**locals())
 
+#post of a staff
+@app.route('/staff/<username>/post')
+def job_posted(username):
+  cursor=g.conn.execute("select * from activity_post where staffname=%s;",username)
+  s=cursor.fetchall()
+  cursor.close()
+  if s==None:
+    jobs =''
+    jidlist=''
+  else:
+    jobs = []
+    jidlist=[]
+    for result in s:
+      b1 = (result[2],result[1],result[3],'')
+      jobs.append(b1)
+  return render_template("staff_post.html",**locals())
+
+
+
+
 if __name__ == "__main__":
   import click
   @click.command()
