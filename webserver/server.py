@@ -63,14 +63,14 @@ def sign():
         if a==None:
           return render_template("signinerror.html")
         else:                  
-          return redirect('/Staff/%s'%username)
+          return redirect('/staff/%s'%username)
       else:
         cur=g.conn.execute("select a.* from Alumni as a, Person as p  where a.user_id=p.user_id and p.username=%s;",username)
         a=cur.first()
         if a==None:
           return render_template("signinerror.html")
         else:
-          return redirect('/Alumni/%s'%username)  
+          return redirect('/alumni/%s'%username)  
     else: 
       return render_template("signinerror.html")
     
@@ -141,7 +141,7 @@ def add():
          
 #staff
 
-@app.route('/Staff/<username>')
+@app.route('/staff/<username>')
 def profile_s(username): 
   cursor=g.conn.execute("select user_id from person where username=%s;",username)
   uid=cursor.first()[0]
